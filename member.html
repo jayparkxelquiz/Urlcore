@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>URLCORE - MEMBERLIST</title>
+  <link rel="icon" type="image/png" href="https://media.discordapp.net/attachments/1096094177827225650/1188432012260933703/lyfe.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-silver: #e0e0e0;
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --accent-white: rgba(255, 255, 255, 0.8);
+    }
+
+    * { margin:0; padding:0; box-sizing: border-box; }
+    
+    body {
+      background: #0a0a0a url('background.gif') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--primary-silver);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    body::before {
+      content: "";
+      position: fixed;
+      top:0; left:0; width:100%; height:100%;
+      background: radial-gradient(circle, transparent 20%, #000 100%);
+      opacity: 0.8;
+      z-index:-1;
+    }
+
+    header {
+      text-align:center;
+      margin-top: 60px;
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 48px;
+      letter-spacing: 12px;
+      background: linear-gradient(to bottom, #fff, #888);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      padding: 0 20px 100px 20px;
+      z-index: 1;
+    }
+
+    .panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+      padding: 40px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+
+
+    .search-row {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    #search-box {
+      width: 100%;
+      max-width: 400px;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 50px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      transition: all 0.3s;
+      outline: none;
+    }
+
+    #search-box:focus {
+      background: rgba(255,255,255,0.1);
+      border-color: var(--primary-silver);
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+
+
+    .member-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .member-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 25px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .member-card:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateX(10px);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .member-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .member-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #333, #111);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #fff;
+      border: 1px solid var(--glass-border);
+    }
+
+    .name-stack .name {
+      display: block;
+      font-weight: 700;
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .name-stack .role {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #888;
+      text-transform: uppercase;
+    }
+
+    .member-facebook {
+      padding: 8px 20px;
+      background: transparent;
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      color: var(--primary-silver);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .member-facebook:hover {
+      background: #fff;
+      color: #000;
+    }
+
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .btn-page {
+      background: none;
+      border: 1px solid var(--glass-border);
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-page:hover:not(:disabled) {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .btn-page:disabled { opacity: 0.3; cursor: default; }
+
+
+    #backHome {
+      position: fixed;
+      top: 30px;
+      left: 30px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 12px;
+      letter-spacing: 2px;
+      padding: 10px 20px;
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(5px);
+      transition: 0.3s;
+      z-index: 100;
+    }
+    #backHome:hover { background: #fff; color: #000; }
+
+    /* Firefly */
+    .firefly {
+      position: fixed;
+      width: 3px;
+      height: 3px;
+      background: #fff;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: floatUp linear forwards;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 0; }
+      20% { opacity: 0.5; }
+      100% { transform: translateY(-100vh); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" id="backHome">← BACK HOME</a>
+
+  <header>
+    <h1>MEMBER</h1>
+  </header>
+
+  <div class="container">
+    <div class="panel">
+      <div class="search-row">
+        <input id="search-box" type="text" placeholder="Search members..." oninput="filterMembers()" />
+      </div>
+
+      <div class="member-list" id="memberList">
+        <div class="member-card"><div class="member-info"><div class="member-avatar">Da</div><div><span class="name">Darzy Urlcore</span></div></div><a class="member-facebook" href="https://www.facebook.com/darzy.permanent" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">Hi</div><div><span class="name">Highjack Urlcore</span></div></div><a class="member-facebook" href="https://www.facebook.com/theking.cordummaitumda" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">Mu</div><div><span class="name">Mum Mahidol</span></div></div><a class="member-facebook" href="https://www.facebook.com/mum.mahidol" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">Ta</div><div><span class="name">Tar Mahidol</span></div></div><a class="member-facebook" href="https://www.facebook.com/profile.php?id=61587648987129" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">Be</div><div><span class="name">Beam Urlcore</span></div></div><a class="member-facebook" href="https://www.facebook.com/profile.php?id=61588054141012#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">Em</div><div><span class="name">Empty Urlcore</span></div></div><a class="member-facebook" href="https://www.facebook.com/profile.php?id=61554712103134#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">Ka</div><div><span class="name">Karzily Urlcore</span></div></div><a class="member-facebook" href="https://www.facebook.com/profile.php?id=61584663637638#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">Cy</div><div><span class="name">Cyndear Urlcore</span></div></div><a class="member-facebook" href="https://www.facebook.com/cyndearurlcore#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">Ma</div><div><span class="name">Marvin Urlcore</span></div></div><a class="member-facebook" href="https://www.facebook.com/marvin.mysmitx#" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">Ma</div><div><span class="name">Deep Urlcore</span></div></div><a class="member-facebook" href="https://www.facebook.com/meliodaslnwza" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">Hi</div><div><span class="name">Highx Urlcore</span></div></div><a class="member-facebook" href="https://www.facebook.com/profile.php?id=100088039754290" target="_blank">FB</a></div>
+
+        <div class="member-card"><div class="member-info"><div class="member-avatar">We</div><div><span class="name">Werkry Unlcore Furystark</span></div></div><a class="member-facebook" href="https://www.facebook.com/Zelsius#" target="_blank">FB</a></div>
+      </div>
+
+      
+
+      <div class="pagination">
+        <button class="btn-page" id="prevBtn" onclick="prevPage()">PREV</button>
+        <span id="pageInfo" style="font-size: 13px; letter-spacing: 2px;">PAGE 1</span>
+        <button class="btn-page" id="nextBtn" onclick="nextPage()">NEXT</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const members = document.querySelectorAll('.member-card');
+    const perPage = 6;
+    let currentPage = 1;
+
+    function showPage(page) {
+      const start = (page - 1) * perPage;
+      const end = start + perPage;
+      members.forEach((m, i) => {
+        m.style.display = (i >= start && i < end) ? 'flex' : 'none';
+      });
+      document.getElementById('pageInfo').textContent = 'PAGE ' + page;
+      document.getElementById('prevBtn').disabled = (page === 1);
+      document.getElementById('nextBtn').disabled = (end >= members.length);
+    }
+    showPage(1);
+
+    function nextPage() { if(currentPage * perPage < members.length) { currentPage++; showPage(currentPage); } }
+    function prevPage() { if(currentPage > 1) { currentPage--; showPage(currentPage); } }
+
+    function filterMembers() {
+      const val = document.getElementById('search-box').value.toLowerCase();
+      members.forEach(m => {
+        const name = m.querySelector('.name').textContent.toLowerCase();
+        if(val === "") {
+            showPage(currentPage); // รีเซ็ตกลับไปหน้าปัจจุบันถ้าช่องค้นหาว่าง
+        } else {
+            m.style.display = name.includes(val) ? 'flex' : 'none';
+        }
+      });
+    }
+
+    function spawnFirefly(){
+      const f = document.createElement('div');
+      f.className = 'firefly';
+      f.style.left = Math.random() * 100 + 'vw';
+      f.style.top = '100vh';
+      f.style.animationDuration = (Math.random() * 3 + 4) + 's';
+      document.body.appendChild(f);
+      setTimeout(() => f.remove(), 7000);
+    }
+    setInterval(spawnFirefly, 400);
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.onkeydown = e => {
+      if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) || (e.ctrlKey && e.key === 'u')) return false;
+    };
+  </script>
+</body>
+</html>
